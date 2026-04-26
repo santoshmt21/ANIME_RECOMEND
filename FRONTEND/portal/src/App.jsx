@@ -498,11 +498,10 @@ const AnimeWebsite = () => {
                 transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
                 className="relative"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-full blur-lg opacity-50" />
                 <img
                   src={authorPhoto}
                   alt="Sandy - Developer"
-                  className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-white/20 relative z-10"
+                  className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-white/30 relative z-10 shadow-2xl"
                 />
               </motion.div>
             </div>
@@ -514,8 +513,11 @@ const AnimeWebsite = () => {
               transition={{ delay: 0.2 }}
               className="text-center"
             >
-              <h2 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 bg-clip-text text-transparent mb-3">
-                SANDY
+              <h2 className="text-3xl sm:text-4xl font-black mb-3 relative inline-block">
+                <span className="absolute -inset-2 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-lg blur opacity-30 -z-10"></span>
+                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+                  ✨ SUCKS ✨
+                </span>
               </h2>
               
               <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-6">
