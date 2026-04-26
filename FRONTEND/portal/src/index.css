@@ -1,4 +1,10 @@
 @import "tailwindcss";
+
+/* Mobile-first base styles */
+* {
+  box-sizing: border-box;
+}
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -16,8 +22,9 @@
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  /* Mobile-first font sizing */
+  font: 16px/145% var(--sans);
+  letter-spacing: 0.16px;
   color-scheme: light dark;
   color: var(--text);
   background: var(--bg);
@@ -26,8 +33,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
+  @media (min-width: 640px) {
+    font-size: 17px;
+    letter-spacing: 0.17px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 18px;
+    letter-spacing: 0.18px;
   }
 }
 
@@ -51,13 +64,19 @@
   }
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
+  padding: 0;
   min-width: 320px;
   min-height: 100vh;
   background:
     radial-gradient(circle at top, rgba(20, 184, 166, 0.12), transparent 34%),
     linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+  overflow-x: hidden;
 }
 
 #root {
@@ -78,25 +97,102 @@ h2 {
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  font-size: 32px;
+  letter-spacing: -0.96px;
+  margin: 20px 0;
+
+  @media (min-width: 640px) {
+    font-size: 42px;
+    margin: 24px 0;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 56px;
+    letter-spacing: -1.68px;
+    margin: 32px 0;
   }
 }
+
 h2 {
-  font-size: 24px;
+  font-size: 18px;
   line-height: 118%;
-  letter-spacing: -0.24px;
+  letter-spacing: -0.18px;
   margin: 0 0 8px;
-  @media (max-width: 1024px) {
+
+  @media (min-width: 640px) {
     font-size: 20px;
+    letter-spacing: -0.20px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 24px;
+    letter-spacing: -0.24px;
   }
 }
+
 p {
   margin: 0;
+}
+
+/* Mobile scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.7);
+}
+
+/* Hide scrollbar while keeping functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Touch-friendly input sizing */
+@media (max-width: 640px) {
+  input,
+  button,
+  select,
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Image optimization for mobile */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent layout shift on page change */
+@supports (scrollbar-gutter: stable) {
+  html {
+    scrollbar-gutter: stable;
+  }
+}
+
+/* Safe area for notched devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
 }
 
 code,

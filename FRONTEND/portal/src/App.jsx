@@ -168,6 +168,9 @@ const AnimeWebsite = () => {
 
   // LANDING PAGE
   const LandingPage = () => {
+    // Reduce particles on mobile for better performance
+    const particleCount = typeof window !== 'undefined' && window.innerWidth < 768 ? 8 : 30;
+    
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
@@ -193,7 +196,7 @@ const AnimeWebsite = () => {
         {/* Animated Overlay */}
         <div className="absolute inset-0">
           {/* Floating Particles */}
-          {[...Array(30)].map((_, i) => (
+          {[...Array(particleCount)].map((_, i) => (
             <motion.div
               key={i}
               className="absolute w-1 h-1 bg-purple-500 rounded-full"
@@ -216,13 +219,13 @@ const AnimeWebsite = () => {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
+        <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-3 sm:px-4 md:px-6">
           {/* Japanese Text Accent */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 0.15, y: 0 }}
             transition={{ delay: 0.3, duration: 1 }}
-            className="absolute top-20 text-9xl font-bold text-purple-500 select-none"
+            className="absolute top-10 sm:top-16 md:top-20 text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-bold text-purple-500 select-none"
             style={{ fontFamily: 'serif' }}
           >
             アニメ
@@ -230,7 +233,7 @@ const AnimeWebsite = () => {
 
           {/* Main Title */}
           <motion.h1
-            className="text-7xl md:text-9xl font-black text-center mb-6 relative"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-black text-center mb-4 sm:mb-6 relative"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 1 }}
@@ -286,7 +289,7 @@ const AnimeWebsite = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.8 }}
-            className="text-xl md:text-2xl text-gray-400 text-center mb-12 max-w-2xl"
+            className="text-sm sm:text-base md:text-xl lg:text-2xl text-gray-400 text-center mb-8 sm:mb-10 md:mb-12 max-w-2xl px-4"
           >
             <span className="text-pink-500 font-bold">探索 • 発見 • 楽しむ</span>
             <br />
@@ -301,7 +304,7 @@ const AnimeWebsite = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setCurrentPage('home')}
-            className="group relative px-12 py-5 text-xl font-bold text-white overflow-hidden rounded-full"
+            className="group relative px-6 sm:px-8 md:px-12 py-3 sm:py-4 md:py-5 text-base sm:text-lg md:text-xl font-bold text-white overflow-hidden rounded-full"
           >
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600"
@@ -325,7 +328,7 @@ const AnimeWebsite = () => {
             <span className="relative z-10 flex items-center gap-2">
               始める • Get Started
               <motion.svg
-                className="w-6 h-6"
+                className="w-5 h-5 sm:w-6 sm:h-6"
                 animate={{ x: [0, 5, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
                 fill="none"
@@ -391,25 +394,39 @@ const AnimeWebsite = () => {
       transition={{ duration: 0.8, ease: [0.43, 0.13, 0.23, 0.96] }}
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/5"
     >
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
         <motion.div
           whileHover={{ scale: 1.05 }}
-          className="text-2xl font-black bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent cursor-pointer"
+          className="text-lg sm:text-xl md:text-2xl font-black bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent cursor-pointer"
           onClick={() => setCurrentPage('home')}
         >
           アニメ<span className="text-white">HUB</span>
         </motion.div>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6 md:gap-8">
           {['Home', 'Search', 'Recommendations'].map((item) => (
             <motion.button
               key={item}
               whileHover={{ scale: 1.1, color: '#ec4899' }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setCurrentPage(item.toLowerCase())}
-              className="text-gray-300 font-medium transition-colors"
+              className="text-gray-300 text-sm md:text-base font-medium transition-colors"
             >
               {item}
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Mobile Menu Items */}
+        <div className="md:hidden flex items-center gap-3">
+          {['Home', 'Search', 'Recommendations'].map((item) => (
+            <motion.button
+              key={`mobile-${item}`}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setCurrentPage(item.toLowerCase())}
+              className="text-xs text-gray-300 font-medium"
+            >
+              {item.charAt(0)}
             </motion.button>
           ))}
         </div>
@@ -418,11 +435,11 @@ const AnimeWebsite = () => {
           whileHover={{ scale: 1.05 }}
           className="relative"
         >
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold cursor-pointer">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold cursor-pointer text-xs sm:text-sm">
             {favorites.length}
           </div>
           <motion.div
-            className="absolute -top-1 -right-1 w-3 h-3 bg-pink-500 rounded-full"
+            className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-pink-500 rounded-full"
             animate={{ scale: [1, 1.2, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           />
@@ -462,20 +479,20 @@ const AnimeWebsite = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileHover={{ opacity: 1, y: 0 }}
-            className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+            className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
           >
-            <h3 className="text-xl font-bold text-white mb-1">{anime.title}</h3>
-            <p className="text-pink-400 text-sm mb-2">{anime.jpTitle} • {anime.title}</p>
-            <div className="flex items-center gap-2 mb-2">
+            <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-1">{anime.title}</h3>
+            <p className="text-pink-400 text-xs sm:text-sm mb-2">{anime.jpTitle}</p>
+            <div className="flex items-center gap-1 mb-2 text-xs sm:text-sm">
               <div className="flex items-center gap-1 text-yellow-400">
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <svg className="w-3 h-3 sm:w-4 sm:h-4 fill-current" viewBox="0 0 20 20">
                   <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
                 </svg>
-                <span className="text-sm font-bold">{anime.rating}</span>
+                <span className="font-bold">{anime.rating}</span>
               </div>
               <div className="flex gap-1">
-                {anime.genre.slice(0, 2).map((g, i) => (
-                  <span key={i} className="text-xs px-2 py-1 bg-purple-500/30 rounded-full text-purple-300">
+                {anime.genre.slice(0, 1).map((g, i) => (
+                  <span key={i} className="px-1.5 py-0.5 bg-purple-500/30 rounded-full text-purple-300 text-xs">
                     {g}
                   </span>
                 ))}
@@ -491,10 +508,10 @@ const AnimeWebsite = () => {
               e.stopPropagation();
               toggleFavorite(anime.id);
             }}
-            className="absolute top-3 right-3 w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute top-2 right-2 sm:top-3 sm:right-3 w-8 h-8 sm:w-10 sm:h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
           >
             <motion.svg
-              className={`w-6 h-6 ${isFavorite ? 'fill-pink-500' : 'fill-none'} stroke-pink-500`}
+              className={`w-5 h-5 sm:w-6 sm:h-6 ${isFavorite ? 'fill-pink-500' : 'fill-none'} stroke-pink-500`}
               viewBox="0 0 24 24"
               strokeWidth={2}
               animate={isFavorite ? { scale: [1, 1.2, 1] } : {}}
@@ -512,9 +529,9 @@ const AnimeWebsite = () => {
         </div>
 
         {/* Title Below */}
-        <div className="mt-3">
-          <h4 className="text-white font-bold truncate">{anime.title}</h4>
-          <p className="text-gray-500 text-sm">{anime.jpTitle} • {anime.title}</p>
+        <div className="mt-2 sm:mt-3">
+          <h4 className="text-white font-bold truncate text-sm sm:text-base">{anime.title}</h4>
+          <p className="text-gray-500 text-xs sm:text-sm">{anime.jpTitle}</p>
         </div>
       </motion.div>
     );
@@ -534,13 +551,13 @@ const AnimeWebsite = () => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
-        className="min-h-screen bg-black pt-20"
+        className="min-h-screen bg-black pt-14 sm:pt-16 md:pt-20"
       >
         <Navbar />
 
         {/* Hero Section */}
         <motion.section
-          className="relative h-[80vh] overflow-hidden"
+          className="relative h-64 sm:h-80 md:h-[80vh] overflow-hidden"
         >
           <div className="absolute inset-0">
             <video
@@ -556,13 +573,13 @@ const AnimeWebsite = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
           </div>
 
-          <div className="relative z-10 h-full flex items-center px-4 md:px-20">
+          <div className="relative z-10 h-full flex items-center px-3 sm:px-6 md:px-20">
             <div className="max-w-2xl">
               <motion.p
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.8 }}
-                className="text-pink-500 text-sm font-bold mb-4 tracking-widest"
+                className="text-pink-500 text-xs sm:text-sm font-bold mb-3 sm:mb-4 tracking-widest"
               >
                 今週の注目 • FEATURED THIS WEEK
               </motion.p>
@@ -571,7 +588,7 @@ const AnimeWebsite = () => {
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.8 }}
-                className="text-6xl md:text-7xl font-black text-white mb-4"
+                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-2 sm:mb-4"
               >
                 {featuredAnime.title}
               </motion.h2>
@@ -580,16 +597,16 @@ const AnimeWebsite = () => {
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
-                className="text-3xl text-purple-400 mb-6 font-serif"
+                className="text-lg sm:text-2xl md:text-3xl text-purple-400 mb-4 sm:mb-6 font-serif"
               >
-                {featuredAnime.jpTitle} • {featuredAnime.title}
+                {featuredAnime.jpTitle}
               </motion.p>
 
               <motion.p
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6, duration: 0.8 }}
-                className="text-gray-300 text-lg mb-8 max-w-xl"
+                className="text-gray-300 text-xs sm:text-base md:text-lg mb-4 sm:mb-8 max-w-xl line-clamp-3 sm:line-clamp-none"
               >
                 {featuredAnime.description}
               </motion.p>
@@ -598,7 +615,7 @@ const AnimeWebsite = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7, duration: 0.8 }}
-                className="flex gap-4"
+                className="flex flex-col sm:flex-row gap-2 sm:gap-4"
               >
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -607,20 +624,20 @@ const AnimeWebsite = () => {
                     setSelectedAnime(featuredAnime);
                     setCurrentPage('details');
                   }}
-                  className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-bold text-white flex items-center gap-2"
+                  className="px-4 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-bold text-white flex items-center justify-center gap-2 text-sm sm:text-base"
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                   </svg>
-                  見る • Watch Now
+                  見る • Watch
                 </motion.button>
 
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-white/10 backdrop-blur-sm rounded-lg font-bold text-white border border-white/20"
+                  className="px-4 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-sm rounded-lg font-bold text-white border border-white/20 text-sm sm:text-base"
                 >
-                  詳細 • More Info
+                  詳細 • Info
                 </motion.button>
               </motion.div>
             </div>
@@ -638,32 +655,32 @@ const AnimeWebsite = () => {
         </motion.section>
 
         {/* Trending Section */}
-        <section className="px-4 md:px-20 py-16">
+        <section className="px-3 sm:px-6 md:px-20 py-8 sm:py-12 md:py-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h3 className="text-4xl font-black text-white mb-2">Trending Now</h3>
-                <p className="text-pink-500 font-bold">トレンド中 • Most Popular</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
+              <div className="mb-4 sm:mb-0">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-1 sm:mb-2">Trending Now</h3>
+                <p className="text-pink-500 text-xs sm:text-sm md:text-base font-bold">トレンド中 • Most Popular</p>
               </div>
               <motion.button
                 whileHover={{ x: 5 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setShowAllTrending((prev) => !prev)}
-                className="text-purple-400 font-bold flex items-center gap-2"
+                className="text-purple-400 text-xs sm:text-sm md:text-base font-bold flex items-center gap-2"
               >
                 {showAllTrending ? 'Show Top 8' : 'View All'}
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </motion.button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
               {visibleTrending.map((anime, i) => (
                 <AnimeCard key={anime.id} anime={anime} delay={i * 0.1} />
               ))}
@@ -672,32 +689,32 @@ const AnimeWebsite = () => {
         </section>
 
         {/* Top Rated Section */}
-        <section className="px-4 md:px-20 py-16 bg-gradient-to-b from-transparent to-purple-900/10">
+        <section className="px-3 sm:px-6 md:px-20 py-8 sm:py-12 md:py-16 bg-gradient-to-b from-transparent to-purple-900/10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h3 className="text-4xl font-black text-white mb-2">Top Rated</h3>
-                <p className="text-pink-500 font-bold">最高評価 • Highest Scores</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
+              <div className="mb-4 sm:mb-0">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-1 sm:mb-2">Top Rated</h3>
+                <p className="text-pink-500 text-xs sm:text-sm md:text-base font-bold">最高評価 • Highest Scores</p>
               </div>
               <motion.button
                 whileHover={{ x: 5 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setShowAllRated((prev) => !prev)}
-                className="text-purple-400 font-bold flex items-center gap-2"
+                className="text-purple-400 text-xs sm:text-sm md:text-base font-bold flex items-center gap-2"
               >
                 {showAllRated ? 'Show Top 8' : 'View All'}
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </motion.button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
               {visibleTopRated.map((anime, i) => (
                 <AnimeCard key={anime.id} anime={anime} delay={i * 0.1} />
               ))}
@@ -718,12 +735,12 @@ const AnimeWebsite = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="min-h-screen bg-black pt-20"
+        className="min-h-screen bg-black pt-14 sm:pt-16 md:pt-20"
       >
         <Navbar />
 
         {/* Hero Section */}
-        <div className="relative h-screen">
+        <div className="relative h-80 sm:h-96 md:h-screen">
           {selectedAnime.backgroundVideo ? (
             <video
               className="absolute inset-0 w-full h-full object-cover"
@@ -744,16 +761,16 @@ const AnimeWebsite = () => {
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/50" />
 
-          <div className="relative z-10 h-full flex items-end px-4 md:px-20 pb-20">
+          <div className="relative z-10 h-full flex items-end px-3 sm:px-6 md:px-20 pb-6 sm:pb-12 md:pb-20">
             <div className="max-w-3xl">
               <motion.button
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 whileHover={{ x: -5 }}
                 onClick={() => setCurrentPage('home')}
-                className="text-gray-400 mb-6 flex items-center gap-2"
+                className="text-gray-400 mb-4 sm:mb-6 flex items-center gap-2 text-xs sm:text-sm md:text-base"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
                 戻る • Back
@@ -763,7 +780,7 @@ const AnimeWebsite = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-6xl md:text-8xl font-black text-white mb-4"
+                className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white mb-2 sm:mb-4"
               >
                 {selectedAnime.title}
               </motion.h1>
@@ -772,26 +789,26 @@ const AnimeWebsite = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-4xl text-purple-400 mb-6 font-serif"
+                className="text-lg sm:text-2xl md:text-3xl lg:text-4xl text-purple-400 mb-4 sm:mb-6 font-serif"
               >
-                {selectedAnime.jpTitle} • {selectedAnime.title}
+                {selectedAnime.jpTitle}
               </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="flex items-center gap-4 mb-6"
+                className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6"
               >
-                <div className="flex items-center gap-2 bg-yellow-500/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                  <svg className="w-6 h-6 fill-yellow-400" viewBox="0 0 20 20">
+                <div className="flex items-center gap-2 bg-yellow-500/20 backdrop-blur-sm px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm md:text-base">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 fill-yellow-400" viewBox="0 0 20 20">
                     <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
                   </svg>
-                  <span className="text-xl font-bold text-yellow-400">{selectedAnime.rating}</span>
+                  <span className="font-bold text-yellow-400">{selectedAnime.rating}</span>
                 </div>
 
-                {selectedAnime.genre.map((g, i) => (
-                  <span key={i} className="px-4 py-2 bg-purple-500/30 backdrop-blur-sm rounded-full text-purple-300 font-bold">
+                {selectedAnime.genre.slice(0, 3).map((g, i) => (
+                  <span key={i} className="px-2 sm:px-3 md:px-4 py-1 sm:py-2 bg-purple-500/30 backdrop-blur-sm rounded-full text-purple-300 font-bold text-xs sm:text-sm md:text-base">
                     {g}
                   </span>
                 ))}
@@ -801,7 +818,7 @@ const AnimeWebsite = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="text-gray-300 text-xl mb-8 leading-relaxed"
+                className="text-gray-300 text-xs sm:text-base md:text-xl mb-4 sm:mb-8 leading-relaxed max-w-xl line-clamp-4 sm:line-clamp-none"
               >
                 {selectedAnime.description}
               </motion.p>
@@ -810,29 +827,29 @@ const AnimeWebsite = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                className="flex gap-4"
+                className="flex flex-col sm:flex-row gap-2 sm:gap-4"
               >
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-bold text-white flex items-center gap-2"
+                  className="px-4 sm:px-8 py-2 sm:py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-bold text-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                   </svg>
-                  再生 • Play Trailer
+                  再生 • Play
                 </motion.button>
 
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => toggleFavorite(selectedAnime.id)}
-                  className={`px-8 py-4 ${favorites.includes(selectedAnime.id) ? 'bg-pink-600' : 'bg-white/10'} backdrop-blur-sm rounded-lg font-bold text-white border border-white/20 flex items-center gap-2`}
+                  className={`px-4 sm:px-8 py-2 sm:py-4 ${favorites.includes(selectedAnime.id) ? 'bg-pink-600' : 'bg-white/10'} backdrop-blur-sm rounded-lg font-bold text-white border border-white/20 flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base`}
                 >
-                  <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
                   </svg>
-                  {favorites.includes(selectedAnime.id) ? '保存済み • Saved' : '保存 • Add to List'}
+                  {favorites.includes(selectedAnime.id) ? '保存' : '追加'}
                 </motion.button>
               </motion.div>
             </div>
@@ -840,13 +857,13 @@ const AnimeWebsite = () => {
         </div>
 
         {/* Trailer Section */}
-        <section className="px-4 md:px-20 py-20">
+        <section className="px-3 sm:px-6 md:px-20 py-8 sm:py-12 md:py-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-3xl font-black text-white mb-6">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-4 sm:mb-6">
               予告編 • Trailer
             </h3>
             <div className="aspect-video rounded-xl overflow-hidden bg-gray-900">
@@ -861,7 +878,7 @@ const AnimeWebsite = () => {
                   allowFullScreen
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400 text-lg">
+                <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm sm:text-base md:text-lg">
                   Trailer link unavailable for this title
                 </div>
               )}
@@ -878,43 +895,43 @@ const AnimeWebsite = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-black pt-20"
+      className="min-h-screen bg-black pt-14 sm:pt-16 md:pt-20"
     >
       <Navbar />
 
-      <div className="px-4 md:px-20 py-16">
+      <div className="px-3 sm:px-6 md:px-20 py-8 sm:py-12 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-5xl font-black text-white mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mb-4">
             検索 • Search Anime
           </h1>
 
           {/* Search Bar */}
-          <div className="relative mb-8">
+          <div className="relative mb-6 sm:mb-8">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by title or Japanese name..."
-              className="w-full px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-white text-sm sm:text-base placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
             />
-            <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
 
           {/* Genre Filter */}
-          <div className="flex gap-3 mb-12 overflow-x-auto pb-2">
+          <div className="flex gap-2 mb-8 sm:mb-12 overflow-x-auto pb-2 scrollbar-hide">
             {genres.map((genre) => (
               <motion.button
                 key={genre}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedGenre(genre)}
-                className={`px-6 py-3 rounded-full font-bold whitespace-nowrap transition-all ${
+                className={`px-3 sm:px-6 py-2 sm:py-3 rounded-full font-bold whitespace-nowrap text-xs sm:text-sm md:text-base transition-all ${
                   selectedGenre === genre
                     ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
                     : 'bg-white/5 text-gray-400 hover:bg-white/10'
@@ -926,14 +943,14 @@ const AnimeWebsite = () => {
           </div>
 
           {/* Results */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
             {filteredAnime.length > 0 ? (
               filteredAnime.map((anime, i) => (
                 <AnimeCard key={anime.id} anime={anime} delay={i * 0.05} />
               ))
             ) : (
-              <div className="col-span-full text-center py-20">
-                <p className="text-gray-500 text-xl">見つかりません • No results found</p>
+              <div className="col-span-full text-center py-16 sm:py-20">
+                <p className="text-gray-500 text-base sm:text-xl">見つかりません • No results found</p>
               </div>
             )}
           </div>
@@ -961,25 +978,25 @@ const AnimeWebsite = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="min-h-screen bg-black pt-20"
+        className="min-h-screen bg-black pt-14 sm:pt-16 md:pt-20"
       >
         <Navbar />
 
-        <div className="px-4 md:px-20 py-16">
+        <div className="px-3 sm:px-6 md:px-20 py-8 sm:py-12 md:py-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-5xl font-black text-white mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mb-2 sm:mb-4">
               おすすめ • Recommendations
             </h1>
-            <p className="text-gray-400 text-xl mb-12">
+            <p className="text-gray-400 text-xs sm:text-base md:text-xl mb-8 sm:mb-12">
               あなたの気分に合わせて • Choose your mood
             </p>
 
             {/* Mood Selection */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-6 mb-12 sm:mb-16">
               {moods.map((mood, i) => (
                 <motion.button
                   key={mood.name}
@@ -989,15 +1006,15 @@ const AnimeWebsite = () => {
                   whileHover={{ scale: 1.05, y: -5 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedMood(mood)}
-                  className={`p-8 rounded-2xl text-center transition-all ${
+                  className={`p-4 sm:p-6 md:p-8 rounded-2xl text-center transition-all ${
                     selectedMood?.name === mood.name
                       ? 'bg-gradient-to-br from-purple-600 to-pink-600'
                       : 'bg-white/5 hover:bg-white/10'
                   }`}
                 >
-                  <div className="text-6xl mb-4">{mood.emoji}</div>
-                  <h3 className="text-2xl font-bold text-white mb-2">{mood.name}</h3>
-                  <p className="text-purple-300">{mood.jp}</p>
+                  <div className="text-3xl sm:text-4xl md:text-6xl mb-2 sm:mb-3 md:mb-4">{mood.emoji}</div>
+                  <h3 className="text-base sm:text-lg md:text-2xl font-bold text-white mb-1 sm:mb-2">{mood.name}</h3>
+                  <p className="text-purple-300 text-xs sm:text-sm md:text-base">{mood.jp}</p>
                 </motion.button>
               ))}
             </div>
@@ -1011,10 +1028,10 @@ const AnimeWebsite = () => {
                   exit={{ opacity: 0, y: -30 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h2 className="text-3xl font-black text-white mb-8">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-6 sm:mb-8">
                     Perfect for {selectedMood.name} mood
                   </h2>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
                     {recommended.map((anime, i) => (
                       <AnimeCard key={anime.id} anime={anime} delay={i * 0.1} />
                     ))}
@@ -1031,7 +1048,7 @@ const AnimeWebsite = () => {
   // LOADING SCREEN
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -1043,9 +1060,9 @@ const AnimeWebsite = () => {
               rotate: [0, 360],
             }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600"
+            className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600"
           />
-          <h2 className="text-3xl font-black bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-black bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
             読み込み中...
           </h2>
         </motion.div>
