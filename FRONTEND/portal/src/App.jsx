@@ -516,7 +516,7 @@ const AnimeWebsite = () => {
               <h2 className="text-3xl sm:text-4xl font-black mb-3 relative inline-block">
                 <span className="absolute -inset-2 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-lg blur opacity-30 -z-10"></span>
                 <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
-                  ✨ SUCKS ✨
+                  ✨ SANDY M T ✨
                 </span>
               </h2>
               
