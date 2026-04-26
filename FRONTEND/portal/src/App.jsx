@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import bgVideo from './YOURNAME.mp4';
 import demonVideo from './DEMON.mp4';
+import authorPhoto from './AUTHOR.png';
 import animeDataset from './anime_data_with_trailers.json';
 
 const localPosterModules = import.meta.glob('./MOVIES/**/*.{jpg,jpeg,png,webp}', {
@@ -134,6 +135,7 @@ const AnimeWebsite = () => {
   const [selectedGenre, setSelectedGenre] = useState('All');
   const [favorites, setFavorites] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showAuthorInfo, setShowAuthorInfo] = useState(false);
 
   // Load favorites from localStorage
   useEffect(() => {
@@ -431,6 +433,17 @@ const AnimeWebsite = () => {
           ))}
         </div>
 
+        {/* Developer Info Button */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setShowAuthorInfo(true)}
+          className="hidden sm:flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-sm font-bold text-pink-400"
+          title="Developer Info"
+        >
+          D
+        </motion.button>
+
         <motion.div
           whileHover={{ scale: 1.05 }}
           className="relative"
@@ -446,6 +459,100 @@ const AnimeWebsite = () => {
         </motion.div>
       </div>
     </motion.nav>
+  );
+
+  // AUTHOR INFO MODAL
+  const AuthorInfo = () => (
+    <AnimatePresence>
+      {showAuthorInfo && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setShowAuthorInfo(false)}
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+        >
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.5, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-gradient-to-br from-black/80 via-black/60 to-black/80 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl"
+          >
+            {/* Close Button */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setShowAuthorInfo(false)}
+              className="absolute top-4 right-4 w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white"
+            >
+              ✕
+            </motion.button>
+
+            {/* Author Photo */}
+            <div className="flex justify-center mb-6">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
+                className="relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-full blur-lg opacity-50" />
+                <img
+                  src={authorPhoto}
+                  alt="Sandy - Developer"
+                  className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-white/20 relative z-10"
+                />
+              </motion.div>
+            </div>
+
+            {/* Author Info */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-center"
+            >
+              <h2 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 bg-clip-text text-transparent mb-3">
+                SANDY
+              </h2>
+              
+              <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-6">
+                I'm a passionate developer focused on building intelligent and visually engaging web applications. This anime recommendation platform combines modern UI design with smart data-driven suggestions to help users discover the best anime effortlessly.
+              </p>
+
+              <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mb-6 italic">
+                I enjoy working with React, AI integrations, and creating smooth, interactive user experiences. My goal is to build applications that are not just functional, but memorable.
+              </p>
+
+              {/* Tech Stack */}
+              <div className="flex flex-wrap gap-2 justify-center mb-6">
+                {['React', 'Framer Motion', 'Tailwind', 'AI/ML'].map((tech) => (
+                  <motion.span
+                    key={tech}
+                    whileHover={{ scale: 1.05 }}
+                    className="px-3 py-1 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-full text-purple-300 text-xs font-medium"
+                  >
+                    {tech}
+                  </motion.span>
+                ))}
+              </div>
+
+              {/* Close Button */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowAuthorInfo(false)}
+                className="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-bold text-white transition-all"
+              >
+                Close
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 
   // ANIME CARD
@@ -1079,6 +1186,7 @@ const AnimeWebsite = () => {
         {currentPage === 'search' && <SearchPage key="search" />}
         {currentPage === 'recommendations' && <RecommendationsPage key="recommendations" />}
       </AnimatePresence>
+      <AuthorInfo />
     </div>
   );
 };
