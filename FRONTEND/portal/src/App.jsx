@@ -438,7 +438,8 @@ const AnimeWebsite = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowAuthorInfo(true)}
-          className="hidden sm:flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-sm font-bold text-pink-400"
+          className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-sm font-bold text-pink-400"
+          aria-label="Open developer info"
           title="Developer Info"
         >
           D
