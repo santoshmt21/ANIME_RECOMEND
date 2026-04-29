@@ -128,6 +128,81 @@ const allAnime = Array.from(
   new Map([...trendingAnime, ...topRatedAnime].map((anime) => [anime.title, anime])).values()
 );
 
+const SearchPageView = ({
+  NavbarComponent,
+  AnimeCardComponent,
+  filteredAnime,
+  genres,
+  searchQuery,
+  setSearchQuery,
+  selectedGenre,
+  setSelectedGenre,
+}) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="min-h-screen bg-black pt-14 sm:pt-16 md:pt-20"
+  >
+    <NavbarComponent />
+
+    <div className="px-3 sm:px-6 md:px-20 py-8 sm:py-12 md:py-16">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mb-4">
+          検索 • Search Anime
+        </h1>
+
+        <div className="relative mb-6 sm:mb-8">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by title or Japanese name..."
+            className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-white text-sm sm:text-base placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
+          />
+          <svg className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+
+        <div className="flex gap-2 mb-8 sm:mb-12 overflow-x-auto pb-2 scrollbar-hide">
+          {genres.map((genre) => (
+            <motion.button
+              key={genre}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSelectedGenre(genre)}
+              className={`px-3 sm:px-6 py-2 sm:py-3 rounded-full font-bold whitespace-nowrap text-xs sm:text-sm md:text-base transition-all ${
+                selectedGenre === genre
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
+                  : 'bg-white/5 text-gray-400 hover:bg-white/10'
+              }`}
+            >
+              {genre}
+            </motion.button>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
+          {filteredAnime.length > 0 ? (
+            filteredAnime.map((anime, i) => (
+              <AnimeCardComponent key={anime.id} anime={anime} delay={i * 0.05} />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-16 sm:py-20">
+              <p className="text-gray-500 text-base sm:text-xl">見つかりません • No results found</p>
+            </div>
+          )}
+        </div>
+      </motion.div>
+    </div>
+  </motion.div>
+);
+
 const AnimeWebsite = () => {
   const [currentPage, setCurrentPage] = useState('landing');
   const [selectedAnime, setSelectedAnime] = useState(null);
@@ -999,76 +1074,6 @@ const AnimeWebsite = () => {
     );
   };
 
-  // SEARCH PAGE
-  const SearchPage = () => (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="min-h-screen bg-black pt-14 sm:pt-16 md:pt-20"
-    >
-      <Navbar />
-
-      <div className="px-3 sm:px-6 md:px-20 py-8 sm:py-12 md:py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mb-4">
-            検索 • Search Anime
-          </h1>
-
-          {/* Search Bar */}
-          <div className="relative mb-6 sm:mb-8">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by title or Japanese name..."
-              className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-white text-sm sm:text-base placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-            />
-            <svg className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-
-          {/* Genre Filter */}
-          <div className="flex gap-2 mb-8 sm:mb-12 overflow-x-auto pb-2 scrollbar-hide">
-            {genres.map((genre) => (
-              <motion.button
-                key={genre}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedGenre(genre)}
-                className={`px-3 sm:px-6 py-2 sm:py-3 rounded-full font-bold whitespace-nowrap text-xs sm:text-sm md:text-base transition-all ${
-                  selectedGenre === genre
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
-                    : 'bg-white/5 text-gray-400 hover:bg-white/10'
-                }`}
-              >
-                {genre}
-              </motion.button>
-            ))}
-          </div>
-
-          {/* Results */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
-            {filteredAnime.length > 0 ? (
-              filteredAnime.map((anime, i) => (
-                <AnimeCard key={anime.id} anime={anime} delay={i * 0.05} />
-              ))
-            ) : (
-              <div className="col-span-full text-center py-16 sm:py-20">
-                <p className="text-gray-500 text-base sm:text-xl">見つかりません • No results found</p>
-              </div>
-            )}
-          </div>
-        </motion.div>
-      </div>
-    </motion.div>
-  );
-
   // RECOMMENDATIONS PAGE
   const RecommendationsPage = () => {
     const [selectedMood, setSelectedMood] = useState(null);
@@ -1186,7 +1191,19 @@ const AnimeWebsite = () => {
         {currentPage === 'landing' && <LandingPage key="landing" />}
         {currentPage === 'home' && <HomePage key="home" />}
         {currentPage === 'details' && <DetailsPage key="details" />}
-        {currentPage === 'search' && <SearchPage key="search" />}
+        {currentPage === 'search' && (
+          <SearchPageView
+            key="search"
+            NavbarComponent={Navbar}
+            AnimeCardComponent={AnimeCard}
+            filteredAnime={filteredAnime}
+            genres={genres}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            selectedGenre={selectedGenre}
+            setSelectedGenre={setSelectedGenre}
+          />
+        )}
         {currentPage === 'recommendations' && <RecommendationsPage key="recommendations" />}
       </AnimatePresence>
       <AuthorInfo />
